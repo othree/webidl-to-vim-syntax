@@ -1,38 +1,40 @@
 "use strict";
 
-
-var WebIDL2 = require("webidl2");
+var parse = require("webidl2").parse;
 var fs = require('fs');
 var factory = require('./factory.js');
 
-var file = process.argv[2];
+var walk    = require('walk');
+var files   = [];
 
-var tree = WebIDL2.parse(fs.readFileSync(file, 'utf8'));
+// Walker options
+var walker  = walk.walk('./webidl/webidl', { followLinks: false });
 
+walker.on('file', function(root, stat, next) {
+  // Add this file to the list of files
+  files.push(root + '/' + stat.name);
+  next();
+});
 
-var memberTraversal = function (node, fn) {
-  for (let member of node.members) {
-    fn(member, node);
+walker.on('end', function() {
+  "use strict";
+
+  for (let file of files) {
+    console.log(file);
+    let tree = parse(fs.readFileSync(file, 'utf8'));
   }
-};
+});
 
-var exposedTo = function (node) {
-  if (node.extAttrs) {
-    for (let ext of node.extAttrs) {
-      if (ext.name === 'Exposed') {
-        return ext.rhs;
-      }
-    }
-  }
 
-  return [];
-}
+// var tree = WebIDL2.parse(fs.readFileSync(file, 'utf8'));
 
-var exposed;
 
-for (let def of tree) {
-  if (def.type === 'interface') {
-    console.log(JSON.stringify(factory.object(def)));
+
+// var exposed;
+
+// for (let def of tree) {
+  // if (def.type === 'interface') {
+    // console.log(JSON.stringify(factory.object(def)));
     // console.log(def.name);
     // exposed = exposedTo(def);
     // if (exposed.length) {
@@ -45,5 +47,5 @@ for (let def of tree) {
         // console.log(`  attrib: ${member.name}`)
       // }
     // });
-  }
-}
+  // }
+// }
