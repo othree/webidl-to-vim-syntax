@@ -28,6 +28,8 @@ var factory = {
     });
     return {
       name: name,
+      inheritance: data.inheritance,
+      implements: data.implements,
       members: members,
       exposed: exposed
     };
