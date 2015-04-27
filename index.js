@@ -3,6 +3,7 @@
 
 var WebIDL2 = require("webidl2");
 var fs = require('fs');
+var factory = require('./factory.js');
 
 var file = process.argv[2];
 
@@ -31,17 +32,18 @@ var exposed;
 
 for (let def of tree) {
   if (def.type === 'interface') {
-    console.log(def.name);
-    exposed = exposedTo(def);
-    if (exposed.length) {
-      console.log(` Exposed To: ${JSON.stringify(exposed)}`);
-    }
-    memberTraversal(def, function (member) {
-      if (member.type === 'operation') {
-        console.log(`  method: ${member.name}`)
-      } else {
-        console.log(`  attrib: ${member.name}`)
-      }
-    });
+    console.log(JSON.stringify(factory.object(def)));
+    // console.log(def.name);
+    // exposed = exposedTo(def);
+    // if (exposed.length) {
+      // console.log(` Exposed To: ${JSON.stringify(exposed)}`);
+    // }
+    // memberTraversal(def, function (member) {
+      // if (member.type === 'operation') {
+        // console.log(`  method: ${member.name}`)
+      // } else {
+        // console.log(`  attrib: ${member.name}`)
+      // }
+    // });
   }
 }
