@@ -1,6 +1,6 @@
 {
   "name": "webidl-to-vim-syntax",
   "dependencies": {
-    "webidl2": "https://github.com/othree/webidl2.js/tarball/develop"
+    "webidl2": "https://github.com/darobin/webidl2.js/tarball/develop"
   }
 }
