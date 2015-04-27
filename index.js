@@ -22,6 +22,19 @@ walker.on('end', function() {
   for (let file of files) {
     console.log(file);
     let tree = parse(fs.readFileSync(file, 'utf8'));
+
+    for (let def of tree) {
+      if (def.type === 'interface') {
+        if (def.partial) {
+          console.log(' partial');
+        }
+        console.log(` Interface: ${def.name}`);
+      } else if (def.type === 'implements') {
+        console.log(` ${def.target} implements ${def.implements}`);
+      } else {
+        console.log(` [${def.type}]`);
+      }
+    }
   }
 });
 
