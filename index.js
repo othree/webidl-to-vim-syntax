@@ -7,6 +7,7 @@ var factory = require('./factory.js');
 var walk    = require('walk');
 var files   = [];
 
+var intfs   = {};
 var impls   = {};
 
 // Walker options
@@ -54,6 +55,11 @@ walker.on('end', function() {
           console.log(' partial');
         }
         console.log(` Interface: ${def.name}`);
+        var members = [];
+        for (let prop of def.members) {
+          members.push(`${prop.type}: ${prop.name}`);
+        }
+        intfs[def.name] = members;
         if (exposed) {
           console.log(`  Exposed: [${exposed.join(', ')}]`)
         }
@@ -67,6 +73,8 @@ walker.on('end', function() {
       }
     }
   }
+
+  console.log(intfs);
 
 });
 
