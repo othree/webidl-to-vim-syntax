@@ -31,6 +31,7 @@ walker.on('end', function() {
       let primaryGlobal = false;
       let constructor = false;
       let exposed = [];
+      let named = null;
 
       if (def.extAttrs) {
         for (let attr of def.extAttrs) {
@@ -46,6 +47,9 @@ walker.on('end', function() {
              && exposed.type === 'identifier') {
               exposed = [exposed.value];
             }
+          }
+          if (attr.name === 'NamedConstructor') {
+            named = attr.rhs.value;
           }
         }
       }
@@ -65,6 +69,7 @@ walker.on('end', function() {
         }
         intfs[def.name] = {
           name: def.name,
+          named: named,
           cons: constructor,
           members: members,
           exposed: exposed
