@@ -7,6 +7,8 @@ var factory = require('./factory.js');
 var walk    = require('walk');
 var files   = [];
 
+var impls   = {};
+
 // Walker options
 var walker  = walk.walk('./webidl/webidl', { followLinks: false });
 
@@ -56,11 +58,15 @@ walker.on('end', function() {
           console.log(`  Exposed: [${exposed.join(', ')}]`)
         }
       } else if (def.type === 'implements') {
+        if (!impls[def.target]) { impls[def.target] = []; }
+        impls[def.target].push(def.implements);
+
         console.log(` ${def.target} implements ${def.implements}`);
       } else {
         console.log(` [${def.type}]`);
       }
     }
   }
+
 });
 
