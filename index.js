@@ -29,12 +29,16 @@ walker.on('end', function() {
 
     for (let def of tree) {
       let primaryGlobal = false;
-      let exposed = null;
+      let constructor = false;
+      let exposed = [];
 
       if (def.extAttrs) {
         for (let attr of def.extAttrs) {
           if (attr.name === 'PrimaryGlobal') {
             primaryGlobal = true;
+          }
+          if (attr.name === 'Constructor') {
+            constructor = true;
           }
           if (attr.name === 'Exposed') {
             exposed = attr.rhs;
@@ -59,7 +63,12 @@ walker.on('end', function() {
         for (let prop of def.members) {
           members.push(`${prop.type}: ${prop.name}`);
         }
-        intfs[def.name] = members;
+        intfs[def.name] = {
+          name: def.name,
+          cons: constructor,
+          members: members,
+          exposed: exposed
+        };
         if (exposed) {
           console.log(`  Exposed: [${exposed.join(', ')}]`)
         }
