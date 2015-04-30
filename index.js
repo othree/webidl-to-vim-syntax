@@ -21,14 +21,40 @@ walker.on('end', function() {
 
   for (let file of files) {
     console.log(file);
+
     let tree = parse(fs.readFileSync(file, 'utf8'));
 
     for (let def of tree) {
+      let primaryGlobal = false;
+      let exposed = null;
+
+      if (def.extAttrs) {
+        for (let attr of def.extAttrs) {
+          if (attr.name === 'PrimaryGlobal') {
+            primaryGlobal = true;
+          }
+          if (attr.name === 'Exposed') {
+            exposed = attr.rhs;
+            if (!Array.isArray(exposed)
+             && exposed.type === 'identifier') {
+              exposed = [exposed.value];
+            }
+          }
+        }
+      }
+
+      if (primaryGlobal) {
+        console.log('');
+        console.log('PrimaryGlobal');
+      }
       if (def.type === 'interface') {
         if (def.partial) {
           console.log(' partial');
         }
         console.log(` Interface: ${def.name}`);
+        if (exposed) {
+          console.log(`  Exposed: [${exposed.join(', ')}]`)
+        }
       } else if (def.type === 'implements') {
         console.log(` ${def.target} implements ${def.implements}`);
       } else {
