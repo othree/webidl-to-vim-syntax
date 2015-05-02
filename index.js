@@ -44,7 +44,6 @@ walker.on('end', function() {
         for (let attr of def.extAttrs) {
           if (attr.name === 'PrimaryGlobal') {
             primary = true;
-            primaryGlobal = def;
           }
           if (attr.name === 'Constructor') {
             constructor = true;
@@ -65,9 +64,6 @@ walker.on('end', function() {
         }
       }
 
-      if (primaryGlobal) {
-        console.log('PrimaryGlobal');
-      }
       if (def.type === 'interface') {
         if (def.partial) {
           console.log(' partial');
@@ -95,6 +91,9 @@ walker.on('end', function() {
             exposed: exposed,
             primary: primary
           };
+          if (primary) {
+            primaryGlobal = intfs[def.name];
+          }
         }
         if (exposed) {
           console.log(`  Exposed: [${exposed.join(', ')}]`)
