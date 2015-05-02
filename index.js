@@ -77,15 +77,19 @@ walker.on('end', function() {
           }
           members.push(`${prop.type}: ${prop.name}`);
         }
-        intfs[def.name] = {
-          name: def.name,
-          cons: constructor,
-          named: named,
-          nointerface: nointerface,
-          members: members,
-          exposed: exposed,
-          primary: primaryGlobal
-        };
+        if (def.partial) {
+          intfs[def.name]['members'] = intfs[def.name]['members'].concat(members);
+        } else {
+          intfs[def.name] = {
+            name: def.name,
+            cons: constructor,
+            named: named,
+            nointerface: nointerface,
+            members: members,
+            exposed: exposed,
+            primary: primaryGlobal
+          };
+        }
         if (exposed) {
           console.log(`  Exposed: [${exposed.join(', ')}]`)
         }
