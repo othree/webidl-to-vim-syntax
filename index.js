@@ -28,6 +28,9 @@ walker.on('end', function() {
     let tree = parse(fs.readFileSync(file, 'utf8'));
 
     for (let def of tree) {
+      if (/^(?:moz|Moz)/.test(def.name)) {
+        continue;
+      }
       let primaryGlobal = false;
       let constructor = false;
       let nointerface = false;
@@ -69,6 +72,9 @@ walker.on('end', function() {
         console.log(` Interface: ${def.name}`);
         var members = [];
         for (let prop of def.members) {
+          if (/^(?:moz|Moz)/.test(prop.name)) {
+            continue;
+          }
           members.push(`${prop.type}: ${prop.name}`);
         }
         intfs[def.name] = {
