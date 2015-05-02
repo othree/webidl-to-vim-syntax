@@ -30,8 +30,9 @@ walker.on('end', function() {
     for (let def of tree) {
       let primaryGlobal = false;
       let constructor = false;
-      let exposed = [];
+      let nointerface = false;
       let named = null;
+      let exposed = [];
 
       if (def.extAttrs) {
         for (let attr of def.extAttrs) {
@@ -41,15 +42,18 @@ walker.on('end', function() {
           if (attr.name === 'Constructor') {
             constructor = true;
           }
+          if (attr.name === 'NamedConstructor') {
+            named = attr.rhs.value;
+          }
+          if (attr.name === 'NoInterfaceObject') {
+            nointerface = true;
+          }
           if (attr.name === 'Exposed') {
             exposed = attr.rhs;
             if (!Array.isArray(exposed)
              && exposed.type === 'identifier') {
               exposed = [exposed.value];
             }
-          }
-          if (attr.name === 'NamedConstructor') {
-            named = attr.rhs.value;
           }
         }
       }
@@ -69,8 +73,9 @@ walker.on('end', function() {
         }
         intfs[def.name] = {
           name: def.name,
-          named: named,
           cons: constructor,
+          named: named,
+          nointerface: nointerface,
           members: members,
           exposed: exposed,
           primary: primaryGlobal
