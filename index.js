@@ -28,7 +28,7 @@ walker.on('end', function() {
     let tree = parse(fs.readFileSync(file, 'utf8'));
 
     for (let def of tree) {
-      if (/^(?:moz|Moz)/.test(def.name)) {
+      if (/^(?:moz|Moz|XUL)/.test(def.name)) {
         continue;
       }
       let primaryGlobal = false;
