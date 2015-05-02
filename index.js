@@ -72,7 +72,8 @@ walker.on('end', function() {
           named: named,
           cons: constructor,
           members: members,
-          exposed: exposed
+          exposed: exposed,
+          primary: primaryGlobal
         };
         if (exposed) {
           console.log(`  Exposed: [${exposed.join(', ')}]`)
