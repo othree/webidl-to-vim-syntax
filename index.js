@@ -1,5 +1,7 @@
 "use strict";
 
+var util = require('util');
+
 var parse = require("webidl2").parse;
 var fs = require('fs');
 var factory = require('./factory.js');
@@ -9,6 +11,7 @@ var files   = [];
 
 var intfs   = {};
 var impls   = {};
+var primaryGlobal = null;
 
 // Walker options
 var walker  = walk.walk('./webidl/webidl', { followLinks: false });
@@ -31,7 +34,7 @@ walker.on('end', function() {
       if (/^(?:moz|Moz|XUL)/.test(def.name)) {
         continue;
       }
-      let primaryGlobal = false;
+      let primary = false;
       let constructor = false;
       let nointerface = false;
       let named = null;
@@ -40,7 +43,8 @@ walker.on('end', function() {
       if (def.extAttrs) {
         for (let attr of def.extAttrs) {
           if (attr.name === 'PrimaryGlobal') {
-            primaryGlobal = true;
+            primary = true;
+            primaryGlobal = def;
           }
           if (attr.name === 'Constructor') {
             constructor = true;
@@ -62,7 +66,6 @@ walker.on('end', function() {
       }
 
       if (primaryGlobal) {
-        console.log('');
         console.log('PrimaryGlobal');
       }
       if (def.type === 'interface') {
@@ -75,7 +78,10 @@ walker.on('end', function() {
           if (/^(?:moz|Moz)/.test(prop.name)) {
             continue;
           }
-          members.push(`${prop.type}: ${prop.name}`);
+          members.push({
+            name: prop.name,
+            type: prop.type
+          });
         }
         if (def.partial) {
           intfs[def.name]['members'] = intfs[def.name]['members'].concat(members);
@@ -87,7 +93,7 @@ walker.on('end', function() {
             nointerface: nointerface,
             members: members,
             exposed: exposed,
-            primary: primaryGlobal
+            primary: primary
           };
         }
         if (exposed) {
@@ -104,7 +110,8 @@ walker.on('end', function() {
     }
   }
 
-  console.log(intfs);
+  // console.log(util.inspect(intfs, {showHidden: false, depth: null}));
+  console.log(primaryGlobal);
 
 });
 
