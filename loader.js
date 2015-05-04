@@ -132,7 +132,10 @@ var loader = {
         }
       } 
       if (d.type === 'implements') {
-        storage.implementations[d.target] = d.implements;
+        if (!storage.implementations[d.target]) {
+          storage.implementations[d.target] = [];
+        }
+        storage.implementations[d.target].push(d.implements);
       } 
     }
 
