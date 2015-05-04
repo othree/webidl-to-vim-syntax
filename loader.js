@@ -1,3 +1,5 @@
+var parse = require("webidl2").parse;
+var fs = require('fs');
 
 if (!Object.assign) {
   Object.defineProperty(Object, 'assign', {
@@ -34,19 +36,21 @@ if (!Object.assign) {
 
 var loader = {
   definition: function (def) {
+    "use strict";
     var ext = loader.extattr(def);
     
     var d = null;
 
-    if (d.type === 'interface') {
+    if (def.type === 'interface') {
       d = loader.interface(def);
     } else if (def.type === 'implements') {
       d = loader.implements(def);
     }
-
+    if (!d) { return d; }
     return Object.assign(d, ext);
   },
   extattr: function (def) {
+    "use strict";
     var primary = false;
     var constructor = false;
     var nointerface = false;
@@ -70,15 +74,15 @@ var loader = {
     }
 
     return {
-      primary,
-      constructor,
-      nointerface,
-      named,
-      exposed
+      primary: primary,
+      constructor: constructor,
+      nointerface: nointerface,
+      named: named,
+      exposed: exposed
     };
   },
   interface: function (def) {
-    var type = 'interface';
+    "use strict";
     var name = def.name;
     var partial = def.partial;
     var members = [];
@@ -90,21 +94,23 @@ var loader = {
       });
     }
     return {
-      type,
-      name,
-      partial,
-      members
+      type: 'interface',
+      name: name,
+      partial: partial,
+      members: members
     };
   },
   implements: function (def) {
+    "use strict";
     // console.log(` ${def.target} implements ${def.implements}`);
-    var type = 'implements';
     return {
+      type: 'implements',
       target: def.target,
       implements: def.implements
     };
   },
   file: function (file, storage) {
+    "use strict";
     // console.log(file);
     if (!storage.interfaces)      { storage.interfaces = {}; }
     if (!storage.implementations) { storage.implementations = {}; }
@@ -115,6 +121,8 @@ var loader = {
       if (/^(?:moz|Moz|XUL)/.test(def.name)) { continue; }
 
       let d = loader.definition(def);
+
+      if (!d) { continue; }
 
       if (d.type === 'interface') {
         if (d.partial) {
