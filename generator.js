@@ -1,4 +1,17 @@
-
+/*
+ *
+ * primaryGlobal: {
+ *   memberName: {
+ *     type: 'cons' or 'method' or 'prop',
+ *     members: {
+ *       memberName: {
+ *         type: 'method' or 'prop'
+ *       }
+ *     }
+ *   }
+ * }
+ *
+ */
 var generator = {
   constructor: function (def) {
   },
