@@ -3,7 +3,7 @@
 var util = require('util');
 
 var loader = require('./loader.js');
-var factory = require('./factory.js');
+var generator = require('./generator.js');
 
 var walk = require('walk');
 var files = [];
@@ -22,6 +22,8 @@ walker.on('file', function(root, stat, next) {
 walker.on('end', function() {
   "use strict";
 
-  console.log(util.inspect(st, {showHidden: false, depth: null}));
+  var data = generator.gen(st);
+  console.log(util.inspect(data, {showHidden: false, depth: null}));
+  // console.log(util.inspect(st, {showHidden: false, depth: null}));
 });
 
