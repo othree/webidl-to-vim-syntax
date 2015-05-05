@@ -29,7 +29,16 @@ var generator = {
       members: generator.members(def.members)
     }
   },
-  implements: function (target, fromInterfaces) {
+  assignMembers: function (target, fromInterfaces) {
+    target.members = target.members.concat(generator.members(fromInterfaces.members));
+  },
+  implements: function (target, from, st) {
+    generator.assignMembers(target, st.interfaces[from]);
+    if (st.implementations[from]) {
+      for (let from of st.implementations[from]) {
+        generator.implements(target, from, st);
+      }
+    }
   },
   mambers: function (members) {
     return members.map(function (member) {
@@ -53,6 +62,11 @@ var generator = {
         continue;
       } else {
         o = generator.object(currentInterface);
+      }
+      if (st.implementations[name]) {
+        for (let from of st.implementations[name]) {
+          generator.implements(o, from);
+        }
       }
 
       primaryGlobal.push(o);
