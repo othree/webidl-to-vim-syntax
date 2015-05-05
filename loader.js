@@ -132,6 +132,7 @@ var loader = {
         }
       } 
       if (d.type === 'implements') {
+        if (/^(?:moz|Moz|XUL)/.test(d.implements)) { continue; }
         if (!storage.implementations[d.target]) {
           storage.implementations[d.target] = [];
         }
