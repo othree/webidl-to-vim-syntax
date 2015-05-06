@@ -14,23 +14,17 @@
  * ]
  *
  */
+var factory = require('./factory.js');
+
 var transform = {
   constructor: function (def) {
-    return {
-      name: def.name,
-      type: 'cons',
-      members: transform.members(def.members)
-    }
+    return factory.constructor(def);
   },
   object: function (def) {
-    return {
-      name: def.name,
-      type: 'prop',
-      members: transform.members(def.members)
-    }
+    return factory.object(def);
   },
   assignMembers: function (target, fromInterfaces) {
-    target.members = target.members.concat(transform.members(fromInterfaces.members));
+    target.members = target.members.concat(factory.members(fromInterfaces.members));
   },
   implements: function (target, from, st) {
     "use strict";
@@ -43,16 +37,7 @@ var transform = {
       }
     }
   },
-  members: function (members) {
-    "use strict";
-    return members.map(function (member) {
-      return {
-        name: member.name,
-        type: (member.type === 'operation') ? 'method' : 'prop'
-      };
-    });
-  },
-  gen: function (st) {
+  run: function (st) {
     "use strict";
     var primaryGlobal = [];
 

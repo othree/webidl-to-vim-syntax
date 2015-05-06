@@ -3,7 +3,7 @@
 var util = require('util');
 
 var loader = require('./loader.js');
-var transform = require('./transform.js');
+var transformer = require('./transform.js');
 
 var walk = require('walk');
 var files = [];
@@ -22,7 +22,7 @@ walker.on('file', function(root, stat, next) {
 walker.on('end', function() {
   "use strict";
 
-  var data = transform.gen(st);
+  var data = transformer.run(st);
   console.log(util.inspect(data, {showHidden: false, depth: null}));
   // console.log(util.inspect(st, {showHidden: false, depth: null}));
 });
