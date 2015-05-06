@@ -3,7 +3,7 @@
 var util = require('util');
 
 var loader = require('./loader.js');
-var transformer = require('./transform.js');
+var transformer = require('./transformer.js');
 
 var walk = require('walk');
 var files = [];
