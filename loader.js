@@ -88,6 +88,7 @@ var loader = {
     var members = [];
     for (let prop of def.members) {
       if (/^(?:moz|Moz)/.test(prop.name)) { continue; }
+      if (/-/.test(prop.name)) { continue; }
       members.push({
         name: prop.name,
         type: prop.type
