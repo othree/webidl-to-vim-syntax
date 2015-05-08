@@ -1,9 +1,8 @@
 "use strict";
 
-var util = require('util');
-
 var loader = require('./loader.js');
 var transformer = require('./transformer.js');
+var generator = require('./generator.js');
 
 var walk = require('walk');
 var files = [];
@@ -23,7 +22,6 @@ walker.on('end', function() {
   "use strict";
 
   var data = transformer.run(st);
-  console.log(util.inspect(data, {showHidden: false, depth: null}));
-  // console.log(util.inspect(st, {showHidden: false, depth: null}));
+  var code = generator.run(data);
 });
 
