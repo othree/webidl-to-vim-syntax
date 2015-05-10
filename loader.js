@@ -55,6 +55,7 @@ var loader = {
     var constructor = false;
     var nointerface = false;
     var named = null;
+    var chrome = false;
     var exposed = [];
 
     if (def.extAttrs) {
@@ -63,6 +64,7 @@ var loader = {
         if (attr.name === 'Constructor')       { constructor = true; }
         if (attr.name === 'NamedConstructor')  { named = attr.rhs.value; }
         if (attr.name === 'NoInterfaceObject') { nointerface = true; }
+        if (attr.name === 'ChromeOnly')        { chrome = true; }
         if (attr.name === 'Exposed') {
           exposed = attr.rhs;
           if (!Array.isArray(exposed)
@@ -77,6 +79,7 @@ var loader = {
       primary: primary,
       constructor: constructor,
       nointerface: nointerface,
+      chrome: chrome,
       named: named,
       exposed: exposed
     };
@@ -124,6 +127,7 @@ var loader = {
       let d = loader.definition(def);
 
       if (!d) { continue; }
+      if (d.chrome) { continue; }
 
       if (d.type === 'interface') {
         if (d.partial) {
