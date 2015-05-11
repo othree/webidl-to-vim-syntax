@@ -26,11 +26,19 @@ var generator = {
         let next = 'nextgroup=';
         if (ms || ps) {
           let ns = [];
-          if (ms) { ns.push(`javascript${o.name}Method`); }
-          if (ps) { ns.push(`javascript${o.name}Prop`); }
+          if (ms) { ns.push(`javascript${o.name}Methods`); }
+          if (ps) { ns.push(`javascript${o.name}Props`); }
           next += ns.join(',');
         }
         console.log(`syntax match   javascriptGlobal${o.name}Dot /\./ contained ${next}`);
+        if (ms) {
+          console.log(`syntax keyword javascript${o.name}Methods contained ${methods.join(' ')}`);
+          console.log(`HiLink hi def link javascript${o.name}Methods keyword`);
+        }
+        if (ps) {
+          console.log(`syntax keyword javascript${o.name}Props contained ${props.join(' ')}`);
+          console.log(`HiLink hi def link javascript${o.name}Props keyword`);
+        }
       }
     }
   }
