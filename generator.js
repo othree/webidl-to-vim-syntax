@@ -24,17 +24,17 @@ var generator = {
       if (o.type === 'cons') {
         allcons.push(o.name);
         if (ms) {
-          console.log(`syntax keyword javascript${o.name}Methods contained ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
+          console.log(`sy keyword javascript${o.name}Methods contained ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
           console.log(`hi def link javascript${o.name}Methods keyword`);
           allprops.push(`javascript${o.name}Methods`);
         }
         if (ps) {
-          console.log(`syntax keyword javascript${o.name}Props contained ${props.join(' ')}`);
-          console.log(`syntax cluster props add=javascript${o.name}Props`);
+          console.log(`sy keyword javascript${o.name}Props contained ${props.join(' ')}`);
+          console.log(`sy cluster props add=javascript${o.name}Props`);
           allprops.push(`javascript${o.name}Props`);
         }
       } else {
-        console.log(`syntax keyword javascriptGlobal ${o.name} nextgroup=javascript${o.name}Dot`);
+        console.log(`sy keyword javascriptGlobal ${o.name} nextgroup=javascript${o.name}Dot`);
         let next = '';
         if (ms || ps) {
           next = 'nextgroup=';
@@ -42,20 +42,24 @@ var generator = {
           if (ms) { ns.push(`javascript${o.name}Methods`); }
           if (ps) { ns.push(`javascript${o.name}Props`); }
           next += ns.join(',');
+        } else {
+          // no members
+          allcons.push(o.name);
+          continue;
         }
-        console.log(`syntax match   javascript${o.name}Dot /\\./ contained ${next}`);
+        console.log(`sy match   javascript${o.name}Dot /\\./ contained ${next}`);
         if (ms) {
-          console.log(`syntax keyword javascript${o.name}Methods contained ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
+          console.log(`sy keyword javascript${o.name}Methods contained ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
           console.log(`hi def link javascript${o.name}Methods keyword`);
         }
         if (ps) {
-          console.log(`syntax keyword javascript${o.name}Props contained ${props.join(' ')}`);
+          console.log(`sy keyword javascript${o.name}Props contained ${props.join(' ')}`);
           console.log(`hi def link javascript${o.name}Props keyword`);
         }
       }
     }
-    console.log(`syntax keyword javascriptGlobal ${allcons.join(' ')}`);
-    console.log(`syntax cluster props add=${allprops.join(',')}`);
+    console.log(`sy keyword javascriptGlobal ${allcons.join(' ')}`);
+    console.log(`sy cluster props add=${allprops.join(',')}`);
   }
 };
 
