@@ -90,7 +90,7 @@ var loader = {
     var partial = def.partial;
     var members = [];
     for (let prop of def.members) {
-      if (/^(?:moz|Moz)/.test(prop.name)) { continue; }
+      if (/^(?:moz|Moz|nsI)/.test(prop.name)) { continue; }
       if (/-/.test(prop.name)) { continue; }
       members.push({
         name: prop.name,
@@ -123,7 +123,7 @@ var loader = {
     var tree = parse(fs.readFileSync(file, 'utf8'));
 
     for (let def of tree) {
-      if (/^(?:moz|Moz|XUL)/.test(def.name)) { continue; }
+      if (/^(?:moz|Moz|XUL|nsI)/.test(def.name)) { continue; }
 
       let d = loader.definition(def);
 
@@ -138,7 +138,7 @@ var loader = {
         }
       } 
       if (d.type === 'implements') {
-        if (/^(?:moz|Moz|XUL)/.test(d.implements)) { continue; }
+        if (/^(?:moz|Moz|XUL|nsI)/.test(d.implements)) { continue; }
         if (!storage.implementations[d.target]) {
           storage.implementations[d.target] = [];
         }
