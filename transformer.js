@@ -37,6 +37,18 @@ var transform = {
       }
     }
   },
+  uniqueMembers: function (o) {
+    var ms = o.members;
+    var cache = {};
+    o.members = [];
+
+    for (m of ms) {
+      if (!cache[m.name]) {
+        cache[m.name] = true;
+        o.members.push(m);
+      }
+    }
+  },
   run: function (st) {
     "use strict";
     var primaryGlobal = [];
@@ -58,6 +70,8 @@ var transform = {
           transform.implements(o, from, st);
         }
       }
+
+      transform.uniqueMembers(o);
 
       primaryGlobal.push(o);
     }
