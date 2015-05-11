@@ -6,6 +6,7 @@ var generator = {
     "use strict";
     var allprops = [];
     var allcons = [];
+    var allkeys = [];
     for (let o of data) {
       let ms = false;
       let ps = false;
@@ -50,16 +51,19 @@ var generator = {
         console.log(`sy match   javascript${o.name}Dot /\\./ contained ${next}`);
         if (ms) {
           console.log(`sy keyword javascript${o.name}Methods contained ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
-          console.log(`hi def link javascript${o.name}Methods keyword`);
+          allkeys.push(`javascript${o.name}Methods`);
         }
         if (ps) {
           console.log(`sy keyword javascript${o.name}Props contained ${props.join(' ')}`);
-          console.log(`hi def link javascript${o.name}Props keyword`);
+          allkeys.push(`javascript${o.name}Props`);
         }
       }
     }
     console.log(`sy keyword javascriptGlobal ${allcons.join(' ')}`);
     console.log(`sy cluster props add=${allprops.join(',')}`);
+    for (let k of allkeys) {
+      console.log(`hi def link ${k} keyword`);
+    }
   }
 };
 
