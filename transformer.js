@@ -43,6 +43,7 @@ var transform = {
     o.members = [];
 
     for (m of ms) {
+      if (!m.name) { continue; }
       if (!cache[m.name]) {
         cache[m.name] = true;
         o.members.push(m);
