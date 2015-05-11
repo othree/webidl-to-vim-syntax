@@ -35,7 +35,6 @@ var generator = {
           allkeys.push(`javascript${o.name}Props`);
         }
       } else {
-        console.log(`sy keyword javascriptGlobal ${o.name} nextgroup=javascript${o.name}Dot`);
         let next = '';
         if (ms || ps) {
           next = 'nextgroup=';
@@ -48,6 +47,7 @@ var generator = {
           allcons.push(o.name);
           continue;
         }
+        console.log(`sy keyword javascriptGlobal ${o.name} nextgroup=javascript${o.name}Dot`);
         console.log(`sy match   javascript${o.name}Dot /\\./ contained ${next}`);
         if (ms) {
           console.log(`sy keyword javascript${o.name}Methods contained ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
