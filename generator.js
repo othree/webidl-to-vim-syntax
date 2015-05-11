@@ -10,11 +10,11 @@ var generator = {
       let props = [];
       let methods = [];
       for (let m of o.members) {
-        if (m.type === 'prop') {
+        if (m.type === 'prop' && m.name !== 'contains') {
           props.push(m.name);
           ps = true;
         } 
-        if (m.type === 'method') {
+        if (m.type === 'method' && m.name !== 'contains') {
           methods.push(m.name);
           ms = true;
         }
