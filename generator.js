@@ -26,13 +26,13 @@ var generator = {
         allcons.push(o.name);
         if (ms) {
           console.log(`sy keyword javascript${o.name}Methods contained ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
-          console.log(`hi def link javascript${o.name}Methods keyword`);
           allprops.push(`javascript${o.name}Methods`);
+          allkeys.push(`javascript${o.name}Methods`);
         }
         if (ps) {
           console.log(`sy keyword javascript${o.name}Props contained ${props.join(' ')}`);
-          console.log(`sy cluster props add=javascript${o.name}Props`);
           allprops.push(`javascript${o.name}Props`);
+          allkeys.push(`javascript${o.name}Props`);
         }
       } else {
         console.log(`sy keyword javascriptGlobal ${o.name} nextgroup=javascript${o.name}Dot`);
