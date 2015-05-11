@@ -94,7 +94,8 @@ var loader = {
       if (/-/.test(prop.name)) { continue; }
       members.push({
         name: prop.name,
-        type: prop.type
+        type: prop.type,
+        idl: (prop.idlType && prop.idlType.idlType) || null
       });
     }
     return {
