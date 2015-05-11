@@ -23,21 +23,22 @@ var generator = {
         console.log(`syntax keyword javascriptGlobal ${o.name}`);
       } else {
         console.log(`syntax keyword javascriptGlobal ${o.name} nextgroup=javascript${o.name}Dot`);
-        let next = 'nextgroup=';
+        let next = '';
         if (ms || ps) {
+          next = 'nextgroup=';
           let ns = [];
           if (ms) { ns.push(`javascript${o.name}Methods`); }
           if (ps) { ns.push(`javascript${o.name}Props`); }
           next += ns.join(',');
         }
-        console.log(`syntax match   javascriptGlobal${o.name}Dot /\./ contained ${next}`);
+        console.log(`syntax match   javascript${o.name}Dot /\\./ contained ${next}`);
         if (ms) {
-          console.log(`syntax keyword javascript${o.name}Methods contained ${methods.join(' ')}`);
-          console.log(`HiLink hi def link javascript${o.name}Methods keyword`);
+          console.log(`syntax keyword javascript${o.name}Methods contained ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
+          console.log(`hi def link javascript${o.name}Methods keyword`);
         }
         if (ps) {
           console.log(`syntax keyword javascript${o.name}Props contained ${props.join(' ')}`);
-          console.log(`HiLink hi def link javascript${o.name}Props keyword`);
+          console.log(`hi def link javascript${o.name}Props keyword`);
         }
       }
     }
