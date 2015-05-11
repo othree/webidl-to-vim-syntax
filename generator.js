@@ -21,6 +21,16 @@ var generator = {
       }
       if (o.type === 'cons') {
         console.log(`syntax keyword javascriptGlobal ${o.name}`);
+        if (ms) {
+          console.log(`syntax keyword javascript${o.name}Methods contained ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
+          console.log(`syntax cluster props add=javascript${o.name}Methods`);
+          console.log(`hi def link javascript${o.name}Methods keyword`);
+        }
+        if (ps) {
+          console.log(`syntax keyword javascript${o.name}Props contained ${props.join(' ')}`);
+          console.log(`syntax cluster props add=javascript${o.name}Props`);
+          console.log(`hi def link javascript${o.name}Props keyword`);
+        }
       } else {
         console.log(`syntax keyword javascriptGlobal ${o.name} nextgroup=javascript${o.name}Dot`);
         let next = '';
