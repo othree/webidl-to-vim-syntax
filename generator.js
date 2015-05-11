@@ -4,6 +4,8 @@ var util = require('util');
 var generator = {
   run: function (data) {
     "use strict";
+    var allprops = [];
+    var allcons = [];
     for (let o of data) {
       let ms = false;
       let ps = false;
@@ -20,16 +22,16 @@ var generator = {
         }
       }
       if (o.type === 'cons') {
-        console.log(`syntax keyword javascriptGlobal ${o.name}`);
+        allcons.push(o.name);
         if (ms) {
           console.log(`syntax keyword javascript${o.name}Methods contained ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
-          console.log(`syntax cluster props add=javascript${o.name}Methods`);
           console.log(`hi def link javascript${o.name}Methods keyword`);
+          allprops.push(`javascript${o.name}Methods`);
         }
         if (ps) {
           console.log(`syntax keyword javascript${o.name}Props contained ${props.join(' ')}`);
           console.log(`syntax cluster props add=javascript${o.name}Props`);
-          console.log(`hi def link javascript${o.name}Props keyword`);
+          allprops.push(`javascript${o.name}Props`);
         }
       } else {
         console.log(`syntax keyword javascriptGlobal ${o.name} nextgroup=javascript${o.name}Dot`);
@@ -52,6 +54,8 @@ var generator = {
         }
       }
     }
+    console.log(`syntax keyword javascriptGlobal ${allcons.join(' ')}`);
+    console.log(`syntax cluster props add=${allprops.join(',')}`);
   }
 };
 
