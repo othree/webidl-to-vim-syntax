@@ -49,12 +49,13 @@ var generator = {
         }
         console.log(`sy keyword javascriptGlobal ${o.name} nextgroup=javascript${o.name}Dot`);
         console.log(`sy match   javascript${o.name}Dot /\\./ contained ${next}`);
+        let contained = o.primary ? '' : 'contained';
         if (ms) {
-          console.log(`sy keyword javascript${o.name}Methods contained ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
+          console.log(`sy keyword javascript${o.name}Methods ${contained} ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
           allkeys.push(`javascript${o.name}Methods`);
         }
         if (ps) {
-          console.log(`sy keyword javascript${o.name}Props contained ${props.join(' ')}`);
+          console.log(`sy keyword javascript${o.name}Props ${contained} ${props.join(' ')}`);
           allkeys.push(`javascript${o.name}Props`);
         }
       }
