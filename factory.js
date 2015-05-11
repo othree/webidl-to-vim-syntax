@@ -18,9 +18,11 @@ var factory = {
   members: function (members) {
     "use strict";
     return members.map(function (member) {
+      var idltype = null;
       return {
         name: member.name,
-        type: (member.type === 'operation') ? 'method' : 'prop'
+        type: (member.type === 'operation') ? 'method' : 'prop',
+        interface: member.idl
       };
     });
   }
