@@ -10,6 +10,7 @@ var factory = {
   object: function (def) {
     return {
       name: def.name,
+      primary: def.primary,
       type: 'prop',
       members: factory.members(def.members)
     }
