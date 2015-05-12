@@ -92,10 +92,12 @@ var loader = {
     for (let prop of def.members) {
       if (/^(?:moz|Moz|nsI)/.test(prop.name)) { continue; }
       if (/-/.test(prop.name)) { continue; }
+      let idl = (prop.idlType && prop.idlType.idlType) || null;
+      if (prop.idlType && prop.idlType.sequence) { idl = false; }
       members.push({
         name: prop.name,
         type: prop.type,
-        idl: (prop.idlType && prop.idlType.idlType) || null
+        idl: idl
       });
     }
     return {
