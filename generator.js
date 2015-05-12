@@ -7,16 +7,22 @@ var generator = {
     var allprops = [];
     var allcons = [];
     var allkeys = [];
-    var withInterfaces = {};
+    var allWithInterfaces = {};
     for (let o of data) {
       let ms = false;
       let ps = false;
       let props = [];
       let methods = [];
+      let withInterfaces = {};
       if (o.members) {
         for (let m of o.members) {
           if (m.type === 'prop' && m.name !== 'contains') {
-            props.push(m.name);
+            if (m.interface) {
+              if (!withInterfaces[m.interface]) { withInterfaces[m.interface] = []; }
+              withInterfaces[m.interface].push(m.name);
+            } else {
+              props.push(m.name);
+            }
             ps = true;
           } 
           if (m.type === 'method' && m.name !== 'contains') {
@@ -56,12 +62,14 @@ var generator = {
           if (ps) {
             console.log(`sy keyword javascript${o.name}Props ${contained} ${props.join(' ')}`);
             allkeys.push(`javascript${o.name}Props`);
+            for (let k in withInterfaces) {
+              let sk = k.replace(' ', '');
+              console.log(`sy keyword javascript${o.name}Props ${withInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot`);
+            }
           }
         } else if (o.interface) {
-          if (!withInterfaces[o.interface]) {
-            withInterfaces[o.interface] = [];
-          }
-          withInterfaces[o.interface].push(o.name);
+          if (!allWithInterfaces[o.interface]) { allWithInterfaces[o.interface] = []; }
+          allWithInterfaces[o.interface].push(o.name);
         } else {
           // no members
           allcons.push(o.name);
@@ -69,9 +77,9 @@ var generator = {
         }
       }
     }
-    for (let k in withInterfaces) {
+    for (let k in allWithInterfaces) {
       let sk = k.replace(' ', '');
-      console.log(`sy keyword javascriptGlobal ${withInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot`);
+      console.log(`sy keyword javascriptGlobal ${allWithInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot`);
     }
     console.log(`sy keyword javascriptGlobal ${allcons.join(' ')}`);
     console.log(`sy cluster props add=${allprops.join(',')}`);
