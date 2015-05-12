@@ -58,7 +58,11 @@ var generator = {
           if (ps) { ns.push(`javascript${o.name}Props`); }
           next += ns.join(',');
 
-          console.log(`sy keyword javascriptGlobal ${o.name} nextgroup=javascript${o.name}Dot`);
+          if (o.type === 'operation') {
+            console.log(`sy keyword javascriptGlobal ${o.name} nextgroup=javascript${o.name}Dot,javascriptFuncCallArg`);
+          } else {
+            console.log(`sy keyword javascriptGlobal ${o.name} nextgroup=javascript${o.name}Dot`);
+          }
           console.log(`sy match   javascript${o.name}Dot /\\./ contained ${next}`);
           let contained = o.primary ? '' : 'contained';
           if (ms) {
@@ -87,9 +91,9 @@ var generator = {
     }
     for (let k in allWithInterfaces) {
       let sk = k.replace(' ', '');
-      console.log(`sy keyword javascriptGlobal ${allWithInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot`);
+      console.log(`sy keyword javascriptGlobal ${allWithInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot,@javascriptAfterIdentifier`);
     }
-    console.log(`sy keyword javascriptGlobal ${allcons.join(' ')}`);
+    console.log(`sy keyword javascriptGlobal ${allcons.join(' ')} nextgroup=javascriptFuncCallArg`);
     console.log(`sy cluster props add=${allprops.join(',')}`);
     for (let k of allkeys) {
       console.log(`hi def link ${k} keyword`);
