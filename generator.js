@@ -60,12 +60,14 @@ var generator = {
             allkeys.push(`javascript${o.name}Methods`);
           }
           if (ps) {
-            console.log(`sy keyword javascript${o.name}Props ${contained} ${props.join(' ')}`);
-            allkeys.push(`javascript${o.name}Props`);
+            if (props.length) {
+              console.log(`sy keyword javascript${o.name}Props ${contained} ${props.join(' ')}`);
+            }
             for (let k in withInterfaces) {
               let sk = k.replace(' ', '');
               console.log(`sy keyword javascript${o.name}Props ${withInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot`);
             }
+            allkeys.push(`javascript${o.name}Props`);
           }
         } else if (o.interface) {
           if (!allWithInterfaces[o.interface]) { allWithInterfaces[o.interface] = []; }
