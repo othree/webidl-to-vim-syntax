@@ -40,11 +40,11 @@ var generator = {
         }
         if (ps) {
           if (props.length) {
-            console.log(`sy keyword javascript${o.name}Props contained ${props.join(' ')}`);
+            console.log(`sy keyword javascript${o.name}Props contained ${props.join(' ')} nextgroup=@javascriptAfterIdentifier`);
           }
           for (let k in withInterfaces) {
             let sk = k.replace(' ', '');
-            console.log(`sy keyword javascript${o.name}Props ${withInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot`);
+            console.log(`sy keyword javascript${o.name}Props ${withInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot,@javascriptAfterIdentifier`);
           }
           allprops.push(`javascript${o.name}Props`);
           allkeys.push(`javascript${o.name}Props`);
@@ -67,11 +67,11 @@ var generator = {
           }
           if (ps) {
             if (props.length) {
-              console.log(`sy keyword javascript${o.name}Props ${contained} ${props.join(' ')}`);
+              console.log(`sy keyword javascript${o.name}Props ${contained} ${props.join(' ')} nextgroup=@javascriptAfterIdentifier`);
             }
             for (let k in withInterfaces) {
               let sk = k.replace(' ', '');
-              console.log(`sy keyword javascript${o.name}Props ${withInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot`);
+              console.log(`sy keyword javascript${o.name}Props ${withInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot,@javascriptAfterIdentifier`);
             }
             allkeys.push(`javascript${o.name}Props`);
           }
