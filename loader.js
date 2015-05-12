@@ -93,6 +93,7 @@ var loader = {
       if (/^(?:moz|Moz|nsI)/.test(prop.name)) { continue; }
       if (/-/.test(prop.name)) { continue; }
       let idl = (prop.idlType && prop.idlType.idlType) || null;
+      if (prop.idlType && prop.idlType.generic) { idl = prop.idlType.generic; }
       if (prop.idlType && prop.idlType.sequence) { idl = false; }
       members.push({
         name: prop.name,
