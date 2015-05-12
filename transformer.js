@@ -53,7 +53,6 @@ var transform = {
   run: function (st) {
     "use strict";
     var primaryGlobal = [];
-    var interfaces = {};
     var primary;
 
     for (let name in st.interfaces) {
@@ -76,7 +75,6 @@ var transform = {
 
       transform.uniqueMembers(o);
 
-      interfaces[name] = o;
       primaryGlobal.push(o);
 
       if (o.primary) {
