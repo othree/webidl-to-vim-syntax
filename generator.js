@@ -7,6 +7,7 @@ var generator = {
     var allprops = [];
     var allcons = [];
     var allkeys = [];
+    var withInterfaces = {};
     for (let o of data) {
       let ms = false;
       let ps = false;
@@ -57,13 +58,20 @@ var generator = {
             allkeys.push(`javascript${o.name}Props`);
           }
         } else if (o.interface) {
-          console.log(`sy keyword javascriptGlobal ${o.name} nextgroup=javascript${o.interface}Dot`);
+          if (!withInterfaces[o.interface]) {
+            withInterfaces[o.interface] = [];
+          }
+          withInterfaces[o.interface].push(o.name);
         } else {
           // no members
           allcons.push(o.name);
           continue;
         }
       }
+    }
+    for (let k in withInterfaces) {
+      let sk = k.replace(' ', '');
+      console.log(`sy keyword javascriptGlobal ${withInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot`);
     }
     console.log(`sy keyword javascriptGlobal ${allcons.join(' ')}`);
     console.log(`sy cluster props add=${allprops.join(',')}`);
