@@ -12,14 +12,16 @@ var generator = {
       let ps = false;
       let props = [];
       let methods = [];
-      for (let m of o.members) {
-        if (m.type === 'prop' && m.name !== 'contains') {
-          props.push(m.name);
-          ps = true;
-        } 
-        if (m.type === 'method' && m.name !== 'contains') {
-          methods.push(m.name);
-          ms = true;
+      if (o.members) {
+        for (let m of o.members) {
+          if (m.type === 'prop' && m.name !== 'contains') {
+            props.push(m.name);
+            ps = true;
+          } 
+          if (m.type === 'method' && m.name !== 'contains') {
+            methods.push(m.name);
+            ms = true;
+          }
         }
       }
       if (o.type === 'cons') {
