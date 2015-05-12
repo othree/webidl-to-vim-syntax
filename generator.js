@@ -39,7 +39,13 @@ var generator = {
           allkeys.push(`javascript${o.name}Methods`);
         }
         if (ps) {
-          console.log(`sy keyword javascript${o.name}Props contained ${props.join(' ')}`);
+          if (props.length) {
+            console.log(`sy keyword javascript${o.name}Props contained ${props.join(' ')}`);
+          }
+          for (let k in withInterfaces) {
+            let sk = k.replace(' ', '');
+            console.log(`sy keyword javascript${o.name}Props ${withInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot`);
+          }
           allprops.push(`javascript${o.name}Props`);
           allkeys.push(`javascript${o.name}Props`);
         }
