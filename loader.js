@@ -99,6 +99,7 @@ var loader = {
       members.push({
         name: prop.name,
         type: prop.type,
+        static: !!prop.static,
         idl: idl
       });
     }

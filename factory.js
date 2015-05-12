@@ -22,6 +22,7 @@ var factory = {
       return {
         name: member.name,
         type: (member.type === 'operation') ? 'method' : 'prop',
+        static: member.static,
         interface: member.idl
       };
     });
