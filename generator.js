@@ -11,28 +11,60 @@ var generator = {
     for (let o of data) {
       let ms = false;
       let ps = false;
+      let sms = false;
+      let sps = false;
       let props = [];
+      let sprops = [];
       let methods = [];
+      let smethods = [];
       let withInterfaces = {};
       if (o.members) {
         for (let m of o.members) {
-          if (m.type === 'prop' && m.name !== 'contains') {
-            if (m.interface) {
-              if (!withInterfaces[m.interface]) { withInterfaces[m.interface] = []; }
-              withInterfaces[m.interface].push(m.name);
+          if (m.name === 'contains') { continue; }
+          if (m.type === 'prop') {
+            if (m.static) {
+              sprops.push(m.name);
+              sps = true;
             } else {
-              props.push(m.name);
+              if (m.interface) {
+                if (!withInterfaces[m.interface]) { withInterfaces[m.interface] = []; }
+                withInterfaces[m.interface].push(m.name);
+              } else {
+                props.push(m.name);
+              }
+              ps = true;
             }
-            ps = true;
           } 
-          if (m.type === 'method' && m.name !== 'contains') {
-            methods.push(m.name);
-            ms = true;
+          if (m.type === 'method') {
+            if (m.static) {
+              smethods.push(m.name);
+              sms = true;
+            } else {
+              methods.push(m.name);
+              ms = true;
+            }
           }
         }
       }
       if (o.type === 'cons') {
-        allcons.push(o.name);
+        console.log(`sy keyword javascriptGlobal ${o.name} nextgroup=javascriptFuncCallArg,javascript${o.name}Dot`);
+        console.log(`sy match   javascript${o.name}Dot /\\./ contained nextgroup=javascript${o.name}StaticMethods,javascript${o.name}StaticProps`);
+        if (sms || sps) {
+          if (sms) {
+            console.log(`sy keyword javascript${o.name}StaticMethods contained ${smethods.join(' ')} nextgroup=javascriptFuncCallArg`);
+            allprops.push(`javascript${o.name}StaticMethods`);
+            allkeys.push(`javascript${o.name}StaticMethods`);
+          }
+          if (sps) {
+            if (sprops.length) {
+              console.log(`sy keyword javascript${o.name}StaticProps contained ${props.join(' ')} nextgroup=@javascriptAfterIdentifier`);
+            }
+            allprops.push(`javascript${o.name}StaticProps`);
+            allkeys.push(`javascript${o.name}StaticProps`);
+          }
+        } else {
+          allcons.push(o.name);
+        }
         if (ms) {
           console.log(`sy keyword javascript${o.name}Methods ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
           allprops.push(`javascript${o.name}Methods`);
