@@ -94,6 +94,9 @@ var generator = {
             console.log(`sy keyword javascriptGlobal ${o.name} nextgroup=javascript${o.name}Dot,javascriptFuncCallArg`);
           } else {
             console.log(`sy keyword javascriptGlobal ${o.name} nextgroup=javascript${o.name}Dot`);
+            if (o.name === 'CSSStyleDeclaration') {
+              next += ',javascriptCSS2PropertiesProps';
+            }
           }
           console.log(`sy match   javascript${o.name}Dot /\\./ contained ${next}`);
           let contained = o.primary ? '' : 'contained';
