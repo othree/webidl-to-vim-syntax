@@ -95,6 +95,7 @@ var loader = {
       let idl = (prop.idlType && prop.idlType.idlType) || null;
       if (prop.idlType && prop.idlType.generic) { idl = prop.idlType.generic; }
       if (prop.idlType && prop.idlType.sequence) { idl = false; }
+      if (prop.idlType && prop.idlType.union) { idl = false; }
       members.push({
         name: prop.name,
         type: prop.type,
