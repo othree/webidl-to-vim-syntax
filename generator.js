@@ -34,13 +34,13 @@ var generator = {
       if (o.type === 'cons') {
         allcons.push(o.name);
         if (ms) {
-          console.log(`sy keyword javascript${o.name}Methods contained ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
+          console.log(`sy keyword javascript${o.name}Methods ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
           allprops.push(`javascript${o.name}Methods`);
           allkeys.push(`javascript${o.name}Methods`);
         }
         if (ps) {
           if (props.length) {
-            console.log(`sy keyword javascript${o.name}Props contained ${props.join(' ')} nextgroup=@javascriptAfterIdentifier`);
+            console.log(`sy keyword javascript${o.name}Props ${props.join(' ')} nextgroup=@javascriptAfterIdentifier`);
           }
           for (let k in withInterfaces) {
             let sk = k.replace(' ', '');
