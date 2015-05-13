@@ -107,14 +107,12 @@ var generator = {
         generator.dot(o.name, next);
         if (sms || sps) {
           if (sms) {
-            console.log(`sy keyword javascript${o.name}StaticMethods contained ${smethods.join(' ')} nextgroup=javascriptFuncCallArg`);
+            generator.keyword(`${o.name}StaticMethods`, smethods, ['FuncCallArg'], 'contained');
             allprops.push(`javascript${o.name}StaticMethods`);
             allkeys.push(`javascript${o.name}StaticMethods`);
           }
           if (sps) {
-            if (sprops.length) {
-              console.log(`sy keyword javascript${o.name}StaticProps contained ${props.join(' ')} nextgroup=@javascriptAfterIdentifier`);
-            }
+            generator.keyword(`${o.name}StaticProps`, sprops, ['@AfterIdentifier'], 'contained');
             allprops.push(`javascript${o.name}StaticProps`);
             allkeys.push(`javascript${o.name}StaticProps`);
           }
