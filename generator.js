@@ -34,8 +34,9 @@ var generator = {
 
     console.log(`sy keyword ${s.jspre(groupname)} ${keywords.join(' ')}${next}`);
   },
-  match: function (groupname, pattern, option, nextgroups) {
+  match: function (groupname, pattern, nextgroups, option) {
     if (!groupname || !pattern) { throw(new Error('Match definition, not enough arguments.')) }
+    if (!option) { option = ''; }
 
     if (nextgroups && !Array.isArray(nextgroups)) { nextgroups = [nextgroups]; }
     nextgroups = s.jsprearr(nextgroups);
@@ -45,6 +46,9 @@ var generator = {
     }
 
     console.log(`sy match   ${s.jspre(groupname)} ${pattern} ${option}${next}`);
+  },
+  dot: function (groupname, nextgroups) {
+    generator.match(`${groupname}Dot`, '/\\./', nextgroups, 'contained');
   },
   run: function (data) {
     "use strict";
@@ -96,7 +100,7 @@ var generator = {
         if (sms) { next.push(`${o.name}StaticMethods`) }
         if (sps) { next.push(`${o.name}StaticProps`) }
         // console.log(`sy match   javascript${o.name}Dot /\\./ contained ${next}`);
-        generator.match(`${o.name}Dot`, '/\\./', 'contained', next);
+        generator.dot(o.name, next);
         if (sms || sps) {
           if (sms) {
             console.log(`sy keyword javascript${o.name}StaticMethods contained ${smethods.join(' ')} nextgroup=javascriptFuncCallArg`);
