@@ -6,7 +6,10 @@ var s = {
     return n[0].toUpperCase() + n.substr(1);
   },
   prefix: function (n) {
-    return `javascript${s.cap(n)}`;
+    var c = (n[0] === '@') ? '@' : '';
+    n = (c === '@') ? n.substr(1) : n;
+      
+    return `${c}javascript${s.cap(n)}`;
   },
   strip: function (n) {
     return n.replace(/ /g, '');
