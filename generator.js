@@ -34,6 +34,18 @@ var generator = {
 
     console.log(`sy keyword ${s.jspre(groupname)} ${keywords.join(' ')}${next}`);
   },
+  match: function (groupname, pattern, option, nextgroups) {
+    if (!groupname || !pattern) { throw(new Error('Match definition, not enough arguments.')) }
+
+    if (nextgroups && !Array.isArray(nextgroups)) { nextgroups = [nextgroups]; }
+    nextgroups = s.jsprearr(nextgroups);
+    var next = '';
+    if (nextgroups && nextgroups.length) {
+      next = ` nextgroup=${nextgroups.join(',')}`;
+    }
+
+    console.log(`sy match   ${s.jspre(groupname)} ${pattern} ${option}${next}`);
+  },
   run: function (data) {
     "use strict";
     var allprops = [];
@@ -80,13 +92,11 @@ var generator = {
       }
       if (o.type === 'cons') {
         generator.keyword('global', o.name, ['FuncCallArg', `${o.name}Dot`]);
-        console.log(`sy keyword javascriptGlobal ${o.name} nextgroup=javascriptFuncCallArg,javascript${o.name}Dot`);
-        let next = 'nextgroup=';
-        if (sms && sps) { next += `javascript${o.name}StaticMethods,javascript${o.name}StaticProps` }
-        else if (sms) { next += `javascript${o.name}StaticMethods` }
-        else if (sps) { next += `javascript${o.name}StaticProps` }
-        else { next = ''; }
-        console.log(`sy match   javascript${o.name}Dot /\\./ contained ${next}`);
+        let next = [];
+        if (sms) { next.push(`${o.name}StaticMethods`) }
+        if (sps) { next.push(`${o.name}StaticProps`) }
+        // console.log(`sy match   javascript${o.name}Dot /\\./ contained ${next}`);
+        generator.match(`${o.name}Dot`, '/\\./', 'contained', next);
         if (sms || sps) {
           if (sms) {
             console.log(`sy keyword javascript${o.name}StaticMethods contained ${smethods.join(' ')} nextgroup=javascriptFuncCallArg`);
