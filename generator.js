@@ -1,7 +1,39 @@
 
 var util = require('util');
 
+var s = {
+  cap: function (n) {
+    return n[0].toUpperCase() + n.substr(1);
+  },
+  prefix: function (n) {
+    return `javascript${s.cap(n)}`;
+  },
+  strip: function (n) {
+    return n.replace(/ /g, '');
+  },
+  jspre: function (n) {
+    return s.prefix(s.strip(n));
+  },
+  jsprearr: function (arr) {
+    return arr.map(s.jspre);
+  },
+};
+
 var generator = {
+  keyword: function (groupname, keywords, nextgroups) {
+    if (!groupname || !keywords) { throw(new Error('Keyword definition, not enough arguments.')) }
+
+    if (!Array.isArray(keywords)) { keywords = [keywords]; }
+
+    if (nextgroups && !Array.isArray(nextgroups)) { nextgroups = [nextgroups]; }
+    nextgroups = s.jsprearr(nextgroups);
+    var next = '';
+    if (nextgroups && nextgroups.length) {
+      next = ` nextgroup=${nextgroups.join(',')}`;
+    }
+
+    console.log(`sy keyword ${s.jspre(groupname)} ${keywords.join(' ')}${next}`);
+  },
   run: function (data) {
     "use strict";
     var allprops = [];
@@ -47,6 +79,7 @@ var generator = {
         }
       }
       if (o.type === 'cons') {
+        generator.keyword('global', o.name, ['FuncCallArg', `${o.name}Dot`]);
         console.log(`sy keyword javascriptGlobal ${o.name} nextgroup=javascriptFuncCallArg,javascript${o.name}Dot`);
         let next = 'nextgroup=';
         if (sms && sps) { next += `javascript${o.name}StaticMethods,javascript${o.name}StaticProps` }
