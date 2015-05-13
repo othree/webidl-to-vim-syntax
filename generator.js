@@ -80,7 +80,7 @@ var generator = {
             console.log(`sy keyword javascript${o.name}Props ${props.join(' ')} nextgroup=@javascriptAfterIdentifier`);
           }
           for (let k in withInterfaces) {
-            let sk = k.replace(' ', '');
+            let sk = k.replace(/ /g, '');
             console.log(`sy keyword javascript${o.name}Props ${withInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot,@javascriptAfterIdentifier`);
           }
           allprops.push(`javascript${o.name}Props`);
@@ -114,7 +114,7 @@ var generator = {
               console.log(`sy keyword javascript${o.name}Props ${contained} ${props.join(' ')} nextgroup=@javascriptAfterIdentifier`);
             }
             for (let k in withInterfaces) {
-              let sk = k.replace(' ', '');
+              let sk = k.replace(/ /g, '');
               console.log(`sy keyword javascript${o.name}Props ${withInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot,@javascriptAfterIdentifier`);
             }
             allkeys.push(`javascript${o.name}Props`);
@@ -130,7 +130,7 @@ var generator = {
       }
     }
     for (let k in allWithInterfaces) {
-      let sk = k.replace(' ', '');
+      let sk = k.replace(/ /g, '');
       console.log(`sy keyword javascriptGlobal ${allWithInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot,@javascriptAfterIdentifier`);
     }
     console.log(`sy keyword javascriptGlobal ${allcons.join(' ')} nextgroup=javascriptFuncCallArg`);
