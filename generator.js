@@ -20,8 +20,9 @@ var s = {
 };
 
 var generator = {
-  keyword: function (groupname, keywords, nextgroups) {
+  keyword: function (groupname, keywords, nextgroups, contained) {
     if (!groupname || !keywords) { throw(new Error('Keyword definition, not enough arguments.')) }
+    if (!contained) { contained = ''; }
 
     if (!Array.isArray(keywords)) { keywords = [keywords]; }
 
@@ -32,11 +33,11 @@ var generator = {
       next = ` nextgroup=${nextgroups.join(',')}`;
     }
 
-    console.log(`sy keyword ${s.jspre(groupname)} ${keywords.join(' ')}${next}`);
+    console.log(`sy keyword ${s.jspre(groupname)} ${contained} ${keywords.join(' ')}${next}`);
   },
-  match: function (groupname, pattern, nextgroups, option) {
+  match: function (groupname, pattern, nextgroups, contained) {
     if (!groupname || !pattern) { throw(new Error('Match definition, not enough arguments.')) }
-    if (!option) { option = ''; }
+    if (!contained) { contained = ''; }
 
     if (nextgroups && !Array.isArray(nextgroups)) { nextgroups = [nextgroups]; }
     nextgroups = s.jsprearr(nextgroups);
@@ -45,7 +46,7 @@ var generator = {
       next = ` nextgroup=${nextgroups.join(',')}`;
     }
 
-    console.log(`sy match   ${s.jspre(groupname)} ${pattern} ${option}${next}`);
+    console.log(`sy match   ${s.jspre(groupname)} ${contained} ${pattern} ${next}`);
   },
   dot: function (groupname, nextgroups) {
     generator.match(`${groupname}Dot`, '/\\./', nextgroups, 'contained');
