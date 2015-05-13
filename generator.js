@@ -34,7 +34,7 @@ var generator = {
               }
               ps = true;
             }
-          } 
+          }
           if (m.type === 'method') {
             if (m.static) {
               smethods.push(m.name);
@@ -48,7 +48,12 @@ var generator = {
       }
       if (o.type === 'cons') {
         console.log(`sy keyword javascriptGlobal ${o.name} nextgroup=javascriptFuncCallArg,javascript${o.name}Dot`);
-        console.log(`sy match   javascript${o.name}Dot /\\./ contained nextgroup=javascript${o.name}StaticMethods,javascript${o.name}StaticProps`);
+        let next = 'nextgroup=';
+        if (sms && sps) { next += `javascript${o.name}StaticMethods,javascript${o.name}StaticProps` }
+        else if (sms) { next += `javascript${o.name}StaticMethods` }
+        else if (sps) { next += `javascript${o.name}StaticProps` }
+        else { next = ''; }
+        console.log(`sy match   javascript${o.name}Dot /\\./ contained ${next}`);
         if (sms || sps) {
           if (sms) {
             console.log(`sy keyword javascript${o.name}StaticMethods contained ${smethods.join(' ')} nextgroup=javascriptFuncCallArg`);
