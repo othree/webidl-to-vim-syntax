@@ -120,12 +120,14 @@ var generator = {
           allcons.push(o.name);
         }
         if (ms) {
+          generator.keyword(`${o.name}Methods`, methods, ['FuncCallArg']);
           console.log(`sy keyword javascript${o.name}Methods ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
           allprops.push(`javascript${o.name}Methods`);
           allkeys.push(`javascript${o.name}Methods`);
         }
         if (ps) {
           if (props.length) {
+            generator.keyword(`${o.name}Props`, props, ['@AfterIdentifier']);
             console.log(`sy keyword javascript${o.name}Props ${props.join(' ')} nextgroup=@javascriptAfterIdentifier`);
           }
           for (let k in withInterfaces) {
