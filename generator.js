@@ -38,6 +38,12 @@ var generator = {
 
     console.log(`sy keyword ${s.jspre(groupname)} ${contained} ${keywords.join(' ')}${next}`);
   },
+  method: function (name, methods, nextgroups, contained) {
+    generator.keyword(`${name}Methods`, methods, ['FuncCallArg'], contained);
+  },
+  staticMethod: function (name, methods) {
+    generator.method(`${name}Static`, methods, [], 'contained');
+  },
   match: function (groupname, pattern, nextgroups, contained) {
     if (!groupname || !pattern) { throw(new Error('Match definition, not enough arguments.')) }
     if (!contained) { contained = ''; }
@@ -107,7 +113,7 @@ var generator = {
         generator.dot(o.name, next);
         if (sms || sps) {
           if (sms) {
-            generator.keyword(`${o.name}StaticMethods`, smethods, ['FuncCallArg'], 'contained');
+            generator.staticMethod(o.name, smethods);
             allprops.push(`javascript${o.name}StaticMethods`);
             allkeys.push(`javascript${o.name}StaticMethods`);
           }
@@ -120,7 +126,7 @@ var generator = {
           allcons.push(o.name);
         }
         if (ms) {
-          generator.keyword(`${o.name}Methods`, methods, ['FuncCallArg']);
+          generator.method(o.name, methods);
           console.log(`sy keyword javascript${o.name}Methods ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
           allprops.push(`javascript${o.name}Methods`);
           allkeys.push(`javascript${o.name}Methods`);
