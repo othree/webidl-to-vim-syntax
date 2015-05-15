@@ -39,16 +39,18 @@ var generator = {
     console.log(`sy keyword ${s.jspre(groupname)} ${contained} ${keywords.join(' ')}${next}`);
   },
   method: function (name, methods, nextgroups, contained) {
-    generator.keyword(`${name}Methods`, methods, ['FuncCallArg'], contained);
+    if (!nextgroups) { nextgroups = []; }
+    generator.keyword(`${name}Methods`, methods, ['FuncCallArg'].concat(nextgroups), contained);
   },
   staticMethod: function (name, methods, nextgroups) {
-    generator.method(`${name}Static`, methods, [], 'contained');
+    generator.method(`${name}Static`, methods, nextgroups, 'contained');
   },
   prop: function (name, props, nextgroups, contained) {
-    generator.keyword(`${name}Props`, props, ['@AfterIdentifier'], contained);
+    if (!nextgroups) { nextgroups = []; }
+    generator.keyword(`${name}Props`, props, ['@AfterIdentifier'].concat(nextgroups), contained);
   },
   staticProp: function (name, props, nextgroups) {
-    generator.prop(`${name}Static`, props, [], 'contained');
+    generator.prop(`${name}Static`, props, nextgroups, 'contained');
   },
   match: function (groupname, pattern, nextgroups, contained) {
     if (!groupname || !pattern) { throw(new Error('Match definition, not enough arguments.')) }
@@ -139,11 +141,9 @@ var generator = {
         if (ps) {
           if (props.length) {
             generator.prop(o.name, props);
-            console.log(`sy keyword javascript${o.name}Props ${props.join(' ')} nextgroup=@javascriptAfterIdentifier`);
           }
           for (let k in withInterfaces) {
-            let sk = k.replace(/ /g, '');
-            console.log(`sy keyword javascript${o.name}Props ${withInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot,@javascriptAfterIdentifier`);
+            generator.prop(o.name, withInterfaces[k], [`${s.strip(k)}Dot`]);
           }
           allprops.push(`javascript${o.name}Props`);
           allkeys.push(`javascript${o.name}Props`);
