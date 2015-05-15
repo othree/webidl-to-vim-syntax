@@ -41,8 +41,14 @@ var generator = {
   method: function (name, methods, nextgroups, contained) {
     generator.keyword(`${name}Methods`, methods, ['FuncCallArg'], contained);
   },
-  staticMethod: function (name, methods) {
+  staticMethod: function (name, methods, nextgroups) {
     generator.method(`${name}Static`, methods, [], 'contained');
+  },
+  prop: function (name, props, nextgroups, contained) {
+    generator.keyword(`${name}Props`, props, ['@AfterIdentifier'], contained);
+  },
+  staticProp: function (name, props, nextgroups) {
+    generator.prop(`${name}Static`, props, [], 'contained');
   },
   match: function (groupname, pattern, nextgroups, contained) {
     if (!groupname || !pattern) { throw(new Error('Match definition, not enough arguments.')) }
@@ -118,7 +124,7 @@ var generator = {
             allkeys.push(`javascript${o.name}StaticMethods`);
           }
           if (sps) {
-            generator.keyword(`${o.name}StaticProps`, sprops, ['@AfterIdentifier'], 'contained');
+            generator.staticProp(o.name, sprops);
             allprops.push(`javascript${o.name}StaticProps`);
             allkeys.push(`javascript${o.name}StaticProps`);
           }
@@ -133,7 +139,7 @@ var generator = {
         }
         if (ps) {
           if (props.length) {
-            generator.keyword(`${o.name}Props`, props, ['@AfterIdentifier']);
+            generator.prop(o.name, props);
             console.log(`sy keyword javascript${o.name}Props ${props.join(' ')} nextgroup=@javascriptAfterIdentifier`);
           }
           for (let k in withInterfaces) {
