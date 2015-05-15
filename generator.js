@@ -133,7 +133,6 @@ var generator = {
         }
         if (ms) {
           generator.method(o.name, methods);
-          console.log(`sy keyword javascript${o.name}Methods ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
           allprops.push(`javascript${o.name}Methods`);
           allkeys.push(`javascript${o.name}Methods`);
         }
