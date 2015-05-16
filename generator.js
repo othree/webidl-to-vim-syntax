@@ -156,9 +156,8 @@ var generator = {
           allkeys.push(`${o.name}Props`);
         }
       } else {
-        let next = '';
         if (ms || ps) {
-          next = [];
+          let next = [];
           if (ms) { next.push(`${o.name}Methods`); }
           if (ps) { next.push(`${o.name}Props`); }
 
@@ -184,8 +183,7 @@ var generator = {
               // console.log(`sy keyword javascript${o.name}Props ${contained} ${props.join(' ')} nextgroup=@javascriptAfterIdentifier`);
             }
             for (let k in withInterfaces) {
-              let sk = k.replace(/ /g, '');
-              generator.prop(o.name, withInterfaces[k], [`${sk}Dot`], contained);
+              generator.prop(o.name, withInterfaces[k], [`${s.strip(k)}Dot`], contained);
               // console.log(`sy keyword javascript${o.name}Props ${withInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot,@javascriptAfterIdentifier`);
             }
             allkeys.push(`${o.name}Props`);
@@ -201,8 +199,7 @@ var generator = {
       }
     }
     for (let k in allWithInterfaces) {
-      let sk = k.replace(/ /g, '');
-      generator.keyword('global', allWithInterfaces[k], ['@AfterIdentifier', `${sk}Dot`]);
+      generator.keyword('global', allWithInterfaces[k], ['@AfterIdentifier', `${s.strip(k)}Dot`]);
       // console.log(`sy keyword javascriptGlobal ${allWithInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot,@javascriptAfterIdentifier`);
     }
     generator.keyword('global', allcons, ['FuncCallArg']);
