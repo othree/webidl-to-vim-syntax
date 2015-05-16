@@ -72,6 +72,9 @@ var generator = {
     groups = s.jsprearr(groups);
     console.log(`sy cluster ${s.jspre(name)} add=${groups.join(',')}`);
   },
+  link: function (from, to) {
+    console.log(`hi def link ${s.jspre(from)} ${to}`);
+  },
   run: function (data) {
     "use strict";
     var allprops = [];
@@ -207,7 +210,8 @@ var generator = {
     // console.log(`sy cluster props add=${allprops.join(',')}`);
     generator.cluster('props', allprops);
     for (let k of allkeys) {
-      console.log(`hi def link ${k} keyword`);
+      generator.link(k, 'keyword');
+      // console.log(`hi def link ${k} keyword`);
     }
   }
 };
