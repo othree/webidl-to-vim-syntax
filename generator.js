@@ -23,6 +23,9 @@ var s = {
 };
 
 var generator = {
+  output: function (frags) {
+    console.log(frags.join(' '));
+  },
   keyword: function (groupname, keywords, nextgroups, contained) {
     if (!groupname || !keywords) { throw(new Error('Keyword definition, not enough arguments.')) }
     if (!contained) { contained = ''; }
@@ -33,10 +36,16 @@ var generator = {
     nextgroups = s.jsprearr(nextgroups);
     var next = '';
     if (nextgroups && nextgroups.length) {
-      next = ` nextgroup=${nextgroups.join(',')}`;
+      next = `nextgroup=${nextgroups.join(',')}`;
     }
 
-    console.log(`sy keyword ${s.jspre(groupname)} ${contained} ${keywords.join(' ')}${next}`);
+    var o = ['sy', 'keyword'];
+    o.push(s.jspre(groupname));
+    if (contained) { o.push(contained); }
+    o.push(keywords.join(' '))
+    o.push(next);
+    generator.output(o);
+    // console.log(`sy keyword ${s.jspre(groupname)} ${contained} ${keywords.join(' ')}${next}`);
   },
   method: function (name, methods, nextgroups, contained) {
     if (!nextgroups) { nextgroups = []; }
