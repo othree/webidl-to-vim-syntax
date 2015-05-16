@@ -43,7 +43,7 @@ var generator = {
     o.push(s.jspre(groupname));
     if (contained) { o.push(contained); }
     o.push(keywords.join(' '))
-    o.push(next);
+    if (next) { o.push(next); }
     generator.output(o);
     // console.log(`sy keyword ${s.jspre(groupname)} ${contained} ${keywords.join(' ')}${next}`);
   },
@@ -69,10 +69,16 @@ var generator = {
     nextgroups = s.jsprearr(nextgroups);
     var next = '';
     if (nextgroups && nextgroups.length) {
-      next = ` nextgroup=${nextgroups.join(',')}`;
+      next = `nextgroup=${nextgroups.join(',')}`;
     }
 
-    console.log(`sy match   ${s.jspre(groupname)} ${contained} ${pattern} ${next}`);
+    var o = ['sy', 'match'];
+    o.push(s.jspre(groupname));
+    if (contained) { o.push(contained); }
+    o.push(pattern);
+    if (next) { o.push(next); }
+    generator.output(o);
+    // console.log(`sy match   ${s.jspre(groupname)} ${contained} ${pattern} ${next}`);
   },
   dot: function (groupname, nextgroups) {
     generator.match(`${groupname}Dot`, '/\\./', nextgroups, 'contained');
