@@ -151,33 +151,35 @@ var generator = {
       } else {
         let next = '';
         if (ms || ps) {
-          next = 'nextgroup=';
-          let ns = [];
-          if (ms) { ns.push(`javascript${o.name}Methods`); }
-          if (ps) { ns.push(`javascript${o.name}Props`); }
-          next += ns.join(',');
+          next = [];
+          if (ms) { next.push(`${o.name}Methods`); }
+          if (ps) { next.push(`${o.name}Props`); }
 
           if (o.type === 'operation') {
-            console.log(`sy keyword javascriptGlobal ${o.name} nextgroup=javascript${o.name}Dot,javascriptFuncCallArg`);
+            generator.keyword('global', o.name, ['FuncCallArg', `${o.name}Dot`]);
           } else {
-            console.log(`sy keyword javascriptGlobal ${o.name} nextgroup=javascript${o.name}Dot`);
+            generator.keyword('global', o.name, [`${o.name}Dot`]);
             if (o.name === 'CSSStyleDeclaration') {
-              next += ',javascriptCSS2PropertiesProps';
+              next.push('CSS2PropertiesProps');
             }
           }
-          console.log(`sy match   javascript${o.name}Dot /\\./ contained ${next}`);
+          generator.dot(o.name, next);
+          // console.log(`sy match   javascript${o.name}Dot /\\./ contained ${next}`);
           let contained = o.primary ? '' : 'contained';
           if (ms) {
-            console.log(`sy keyword javascript${o.name}Methods ${contained} ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
+            generator.method(o.name, methods, [], contained);
+            // console.log(`sy keyword javascript${o.name}Methods ${contained} ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
             allkeys.push(`javascript${o.name}Methods`);
           }
           if (ps) {
             if (props.length) {
-              console.log(`sy keyword javascript${o.name}Props ${contained} ${props.join(' ')} nextgroup=@javascriptAfterIdentifier`);
+              generator.prop(o.name, props, [], contained);
+              // console.log(`sy keyword javascript${o.name}Props ${contained} ${props.join(' ')} nextgroup=@javascriptAfterIdentifier`);
             }
             for (let k in withInterfaces) {
               let sk = k.replace(/ /g, '');
-              console.log(`sy keyword javascript${o.name}Props ${withInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot,@javascriptAfterIdentifier`);
+              generator.prop(o.name, withInterfaces[k], [`${sk}Dot`], contained);
+              // console.log(`sy keyword javascript${o.name}Props ${withInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot,@javascriptAfterIdentifier`);
             }
             allkeys.push(`javascript${o.name}Props`);
           }
