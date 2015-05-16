@@ -195,9 +195,11 @@ var generator = {
     }
     for (let k in allWithInterfaces) {
       let sk = k.replace(/ /g, '');
-      console.log(`sy keyword javascriptGlobal ${allWithInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot,@javascriptAfterIdentifier`);
+      generator.keyword('global', allWithInterfaces[k], ['@AfterIdentifier', `${sk}Dot`]);
+      // console.log(`sy keyword javascriptGlobal ${allWithInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot,@javascriptAfterIdentifier`);
     }
-    console.log(`sy keyword javascriptGlobal ${allcons.join(' ')} nextgroup=javascriptFuncCallArg`);
+    generator.keyword('global', allcons, ['FuncCallArg']);
+    // console.log(`sy keyword javascriptGlobal ${allcons.join(' ')} nextgroup=javascriptFuncCallArg`);
     console.log(`sy cluster props add=${allprops.join(',')}`);
     for (let k of allkeys) {
       console.log(`hi def link ${k} keyword`);
