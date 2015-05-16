@@ -68,6 +68,10 @@ var generator = {
   dot: function (groupname, nextgroups) {
     generator.match(`${groupname}Dot`, '/\\./', nextgroups, 'contained');
   },
+  cluster: function (name, groups) {
+    groups = s.jsprearr(groups);
+    console.log(`sy cluster ${s.jspre(name)} add=${groups.join(',')}`);
+  },
   run: function (data) {
     "use strict";
     var allprops = [];
@@ -122,21 +126,21 @@ var generator = {
         if (sms || sps) {
           if (sms) {
             generator.staticMethod(o.name, smethods);
-            allprops.push(`javascript${o.name}StaticMethods`);
-            allkeys.push(`javascript${o.name}StaticMethods`);
+            allprops.push(`${o.name}StaticMethods`);
+            allkeys.push(`${o.name}StaticMethods`);
           }
           if (sps) {
             generator.staticProp(o.name, sprops);
-            allprops.push(`javascript${o.name}StaticProps`);
-            allkeys.push(`javascript${o.name}StaticProps`);
+            allprops.push(`${o.name}StaticProps`);
+            allkeys.push(`${o.name}StaticProps`);
           }
         } else {
           allcons.push(o.name);
         }
         if (ms) {
           generator.method(o.name, methods);
-          allprops.push(`javascript${o.name}Methods`);
-          allkeys.push(`javascript${o.name}Methods`);
+          allprops.push(`${o.name}Methods`);
+          allkeys.push(`${o.name}Methods`);
         }
         if (ps) {
           if (props.length) {
@@ -145,8 +149,8 @@ var generator = {
           for (let k in withInterfaces) {
             generator.prop(o.name, withInterfaces[k], [`${s.strip(k)}Dot`]);
           }
-          allprops.push(`javascript${o.name}Props`);
-          allkeys.push(`javascript${o.name}Props`);
+          allprops.push(`${o.name}Props`);
+          allkeys.push(`${o.name}Props`);
         }
       } else {
         let next = '';
@@ -169,7 +173,7 @@ var generator = {
           if (ms) {
             generator.method(o.name, methods, [], contained);
             // console.log(`sy keyword javascript${o.name}Methods ${contained} ${methods.join(' ')} nextgroup=javascriptFuncCallArg`);
-            allkeys.push(`javascript${o.name}Methods`);
+            allkeys.push(`${o.name}Methods`);
           }
           if (ps) {
             if (props.length) {
@@ -181,7 +185,7 @@ var generator = {
               generator.prop(o.name, withInterfaces[k], [`${sk}Dot`], contained);
               // console.log(`sy keyword javascript${o.name}Props ${withInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot,@javascriptAfterIdentifier`);
             }
-            allkeys.push(`javascript${o.name}Props`);
+            allkeys.push(`${o.name}Props`);
           }
         } else if (o.interface) {
           if (!allWithInterfaces[o.interface]) { allWithInterfaces[o.interface] = []; }
@@ -200,7 +204,8 @@ var generator = {
     }
     generator.keyword('global', allcons, ['FuncCallArg']);
     // console.log(`sy keyword javascriptGlobal ${allcons.join(' ')} nextgroup=javascriptFuncCallArg`);
-    console.log(`sy cluster props add=${allprops.join(',')}`);
+    // console.log(`sy cluster props add=${allprops.join(',')}`);
+    generator.cluster('props', allprops);
     for (let k of allkeys) {
       console.log(`hi def link ${k} keyword`);
     }
