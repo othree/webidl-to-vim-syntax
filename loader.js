@@ -137,8 +137,14 @@ var loader = {
 
       if (d.type === 'interface') {
         if (d.partial) {
+          if (!storage.interfaces[d.name]) {
+            storage.interfaces[d.name] = {members: []};
+          }
           storage.interfaces[d.name].members = storage.interfaces[d.name].members.concat(d.members);
         } else {
+          if (storage.interfaces[d.name]) {
+            d.members = d.members.concat(storage.interfaces[d.name].members);
+          }
           storage.interfaces[d.name] = d;
         }
       } 
