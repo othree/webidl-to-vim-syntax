@@ -142,10 +142,10 @@ var generator = {
         }
         if (ps) {
           if (props.length) {
-            generator.prop(o.name, props);
+            generator.prop(o.name, props, [], 'contained');
           }
           for (let k in withInterfaces) {
-            generator.prop(o.name, withInterfaces[k], [`${s.strip(k)}Dot`]);
+            generator.prop(o.name, withInterfaces[k], [`${s.strip(k)}Dot`], 'contained');
           }
           allprops.push(`${o.name}Props`);
           allkeys.push(`${o.name}Props`);
