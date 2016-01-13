@@ -142,7 +142,7 @@ var generator = {
           allcons.push(o.name);
         }
         if (ms) {
-          generator.method(o.name, methods);
+          generator.method(o.name, methods, [], 'contained');
           allprops.push(`${o.name}Methods`);
           allkeys.push(`${o.name}Methods`);
         }
