@@ -3,6 +3,12 @@ var util = require('util');
 var s = require('./s.js');
 
 var generator = {
+  nextTrans: function (name) {
+    if (name === 'WindowProxy') {
+      name = 'Window';
+    }
+    return name;
+  },
   output: function (frags) {
     console.log(frags.join(' '));
   },
@@ -178,7 +184,7 @@ var generator = {
               // console.log(`sy keyword javascript${o.name}Props ${contained} ${props.join(' ')} nextgroup=@javascriptAfterIdentifier`);
             }
             for (let k in withInterfaces) {
-              generator.prop(o.name, withInterfaces[k], [`${s.strip(k)}Dot`], contained);
+              generator.prop(o.name, withInterfaces[k], [`${generator.nextTrans(s.strip(k))}Dot`], contained);
               // console.log(`sy keyword javascript${o.name}Props ${withInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot,@javascriptAfterIdentifier`);
             }
             allkeys.push(`${o.name}Props`);
@@ -194,7 +200,7 @@ var generator = {
       }
     }
     for (let k in allWithInterfaces) {
-      generator.keyword('global', allWithInterfaces[k], ['@AfterIdentifier', `${s.strip(k)}Dot`]);
+      generator.keyword('global', allWithInterfaces[k], ['@AfterIdentifier', `${generator.nextTrans(s.strip(k))}Dot`]);
       // console.log(`sy keyword javascriptGlobal ${allWithInterfaces[k].join(' ')} nextgroup=javascript${sk}Dot,@javascriptAfterIdentifier`);
     }
     generator.keyword('global', allcons, ['FuncCallArg']);
